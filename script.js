@@ -6,10 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const desktop = document.querySelector('.desktop-container');
     const timeElement = document.getElementById('time');
     const dockItems = document.querySelectorAll('.dock-item');
+    const windows = document.querySelectorAll('.window');
+
+    // Shutdown elements
+    const appleIcon = document.querySelector('.apple-menu');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const shutdownBtn = document.getElementById('shutdown-btn');
+    const shutdownOverlay = document.getElementById('shutdown-overlay');
+    const cancelShutdownBtn = document.getElementById('cancel-shutdown');
+    const confirmShutdownBtn = document.getElementById('confirm-shutdown');
     
     // --- Initial Setup ---
     
-    // 1. Zoom Interaction
+    // 1. Zoom Interaction (Boot Up)
     macbook.addEventListener('click', () => {
         container.classList.add('zoomed-in');
         desktop.classList.remove('hidden');
@@ -18,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Update Clock
     function updateTime() {
         const now = new Date();
-        // Using IST for Chennai, though client-side JS uses browser time
         const timeString = now.toLocaleTimeString('en-US', { 
             hour: 'numeric', 
             minute: '2-digit', 
@@ -31,8 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTime();
 
     // --- Window Management ---
-    
-    const windows = document.querySelectorAll('.window');
     let activeWindow = null;
     let maxZIndex = 100;
 
@@ -43,7 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const windowEl = document.getElementById(windowId);
             
             if (windowEl) {
-                windowEl.classList.remove('hidden');
+                if (windowEl.classList.contains('hidden')) {
+                    windowEl.classList.remove('hidden');
+                }
+                item.classList.add('is-open');
                 focusWindow(windowEl);
             }
         });
@@ -52,11 +61,29 @@ document.addEventListener('DOMContentLoaded', () => {
     windows.forEach(windowEl => {
         const header = windowEl.querySelector('.window-header');
         const closeBtn = windowEl.querySelector('.control.close');
+        const minimizeBtn = windowEl.querySelector('.control.minimize');
+        const maximizeBtn = windowEl.querySelector('.control.maximize');
 
-        // **THIS MAKES THE CLOSE BUTTON WORK**
+        // Close button
         closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevents other click events on the window
+            e.stopPropagation();
             windowEl.classList.add('hidden');
+            const dockItem = document.querySelector(`.dock-item[data-window="${windowEl.id}"]`);
+            if (dockItem) {
+                dockItem.classList.remove('is-open');
+            }
+        });
+        
+        // Minimize button
+        minimizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            windowEl.classList.add('hidden');
+        });
+        
+        // Maximize button
+        maximizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMaximize(windowEl);
         });
         
         // Focus window on click
@@ -77,12 +104,38 @@ document.addEventListener('DOMContentLoaded', () => {
         windowEl.style.zIndex = maxZIndex;
     }
 
+    function toggleMaximize(windowEl) {
+        if (windowEl.classList.contains('maximized')) {
+            // Restore
+            windowEl.classList.remove('maximized');
+            windowEl.style.width = windowEl.dataset.oldWidth;
+            windowEl.style.height = windowEl.dataset.oldHeight;
+            windowEl.style.top = windowEl.dataset.oldTop;
+            windowEl.style.left = windowEl.dataset.oldLeft;
+        } else {
+            // Maximize
+            // Store current size and position before maximizing
+            windowEl.dataset.oldWidth = windowEl.offsetWidth + 'px';
+            windowEl.dataset.oldHeight = windowEl.offsetHeight + 'px';
+            windowEl.dataset.oldTop = windowEl.offsetTop + 'px';
+            windowEl.dataset.oldLeft = windowEl.offsetLeft + 'px';
+            
+            windowEl.classList.add('maximized');
+            // Remove inline styles to let the CSS class take over
+            windowEl.style.width = '';
+            windowEl.style.height = '';
+            windowEl.style.top = '';
+            windowEl.style.left = '';
+        }
+    }
+
     function makeDraggable(element, handle) {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
         handle.onmousedown = dragMouseDown;
 
         function dragMouseDown(e) {
+            // Can't drag if maximized
+            if (element.classList.contains('maximized')) return;
             e.preventDefault();
             pos3 = e.clientX;
             pos4 = e.clientY;
@@ -96,12 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            
-            const newTop = element.offsetTop - pos2;
-            const newLeft = element.offsetLeft - pos1;
-
-            element.style.top = newTop + "px";
-            element.style.left = newLeft + "px";
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
         }
 
         function closeDragElement() {
@@ -116,20 +165,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sidebarLinks.forEach(link => {
         link.addEventListener('click', () => {
-            // Update active link
             sidebarLinks.forEach(item => item.classList.remove('active'));
             link.classList.add('active');
 
-            // Show corresponding content
             const sectionId = link.dataset.section + '-section';
             contentSections.forEach(section => {
-                if(section.id === sectionId) {
-                    section.classList.remove('hidden');
-                } else {
-                    section.classList.add('hidden');
-                }
+                section.classList.toggle('hidden', section.id !== sectionId);
             });
         });
     });
 
+    // --- Shutdown Logic ---
+    appleIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', () => {
+        if (!dropdownMenu.classList.contains('hidden')) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    shutdownBtn.addEventListener('click', () => {
+        shutdownOverlay.classList.remove('hidden');
+        dropdownMenu.classList.add('hidden');
+    });
+
+    cancelShutdownBtn.addEventListener('click', () => {
+        shutdownOverlay.classList.add('hidden');
+    });
+
+    confirmShutdownBtn.addEventListener('click', () => {
+        shutdownOverlay.classList.add('hidden');
+        windows.forEach(win => win.classList.add('hidden'));
+        
+        // Reverse the boot-up animation
+        container.classList.remove('zoomed-in');
+        
+        // Reset dock indicators after the animation finishes
+        setTimeout(() => {
+            dockItems.forEach(item => item.classList.remove('is-open'));
+        }, 600); // Must match CSS transition duration
+    });
 });
