@@ -34,7 +34,7 @@ body {
 .desk-container {
     width: 100%;
     height: 100vh;
-    background: url('aggg.jpg') center/cover no-repeat;
+    background: url('cadm.jpg') center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -355,3 +355,4 @@ body {
     white-space: nowrap;
 
 }
+
