@@ -2,7 +2,7 @@
 
 /* ✨ DARK THEME COLOR PALETTE ✨ */
 :root {
-    --background: url('macwall.jpg');
+    --background: url('mac.jpg');
     --window-bg: rgba(40, 40, 40, 0.6);
     --dock-bg: rgba(30, 30, 30, 0.4);
     --text-color: #e0e0e0;
@@ -34,7 +34,7 @@ body {
 .desk-container {
     width: 100%;
     height: 100vh;
-    background: url('cadm.jpg') center/cover no-repeat;
+    background: url('aggg.jpg') center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -102,8 +102,6 @@ body {
     pointer-events: none;
 }
 
-/* REMOVED: The original profile picture styling '#profile-pic' has been removed. */
-
 /* Top Menu Bar */
 .top-menu-bar {
     position: fixed;
@@ -123,9 +121,9 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
-.left-menu .fa-apple {
-    font-size: 18px;
-    margin-right: 15px;
+.left-menu {
+    display: flex;
+    align-items: center;
 }
 
 .left-menu .app-name {
@@ -134,6 +132,46 @@ body {
 
 .right-menu .battery-status {
     margin-right: 15px;
+}
+
+/* Apple Menu & Shutdown Button */
+.apple-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.apple-menu .fa-apple {
+    font-size: 18px;
+    margin-right: 15px;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.apple-menu:hover .fa-apple {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.dropdown-menu {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    background: rgba(40, 40, 40, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    list-style: none;
+    padding: 5px;
+    width: 200px;
+    z-index: 2000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.dropdown-menu li {
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.dropdown-menu li:hover {
+    background-color: #007aff; /* macOS blue */
+    color: white;
 }
 
 /* Windows */
@@ -155,7 +193,18 @@ body {
     resize: both;
     min-width: 400px;
     min-height: 300px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
+
+.window.maximized {
+    top: 28px !important; /* Below menu bar */
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 28px) !important; /* Full height minus menu bar */
+    border-radius: 0;
+    resize: none;
+}
+
 
 .window-header {
     height: 36px;
@@ -164,6 +213,7 @@ body {
     padding: 0 12px;
     cursor: move;
     background: rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
 }
 
 .window-controls {
@@ -175,6 +225,7 @@ body {
     width: 12px;
     height: 12px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .control.close { background-color: #ff5f56; }
@@ -193,6 +244,7 @@ body {
     flex-grow: 1;
     display: flex;
     color: var(--text-color);
+    overflow: hidden;
 }
 
 .sidebar {
@@ -234,7 +286,6 @@ body {
 
 .content-section hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;}
 
-/* Skills Grid */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -260,7 +311,7 @@ body {
 .project-body {
     padding: 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     overflow-y: auto;
 }
@@ -275,29 +326,24 @@ body {
 .project-card h4 { margin-bottom: 10px; }
 
 /* Contact Window */
-/* Contact Window */
+.contact-body {
+    padding: 25px;
+}
 .contact-body a {
-    /* Critical for vertical alignment: makes each link take up a full line */
     display: block; 
-    
-    /* Inherit the theme text color (from :root) */
     color: var(--text-color);
-    align-items: center;
-    
-    /* Remove the default link underline for a cleaner look */
-    text-decoration: currentColor; 
-    
-    /* Add some space below each contact item for separation */
-    padding: 5px 0;
-    
-    /* Optional: Slight color change on hover for interactivity */
+    text-decoration: none; 
+    padding: 8px 0;
     transition: color 0.2s ease;
 }
-
+.contact-body a i {
+    margin-right: 12px;
+    width: 20px;
+}
 .contact-body a:hover {
-    /* Use the text color for a clean look, maybe slightly brighter or a brand color */
     color: #fff; 
 }
+
 
 /* ✨ GLASS DOCK STYLING ✨ */
 .dock {
@@ -312,9 +358,9 @@ body {
     padding: 8px;
     height: 70px;
     background: var(--dock-bg);
-    backdrop-filter: blur(25px); /* Increased blur */
+    backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    border-radius: 22px; /* Adjusted for glass look */
+    border-radius: 22px;
     border: 1px solid var(--border-color);
     box-shadow: 0 5px 20px var(--shadow-color);
     z-index: 1000;
@@ -328,15 +374,11 @@ body {
     align-items: center;
     border-radius: 12px;
     font-size: 28px;
-    color: #fff; /* Icons are now white */
+    color: #fff;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), margin-bottom 0.2s ease;
     cursor: pointer;
     position: relative;
 }
-
-/* NEW STYLING for Profile Picture Dock Item */
-
- 
 
 .dock-item:hover {
     transform: scale(1.2) translateY(-10px);
@@ -353,8 +395,80 @@ body {
     border-radius: 5px;
     font-size: 12px;
     white-space: nowrap;
-
 }
 
+/* Dock Item "Is Open" Indicator */
+.dock-item::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    width: 6px;
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
 
+.dock-item.is-open::before {
+    opacity: 1;
+}
 
+/* Shutdown Confirmation Overlay */
+.overlay-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+.shutdown-dialog {
+    background: var(--window-bg);
+    backdrop-filter: blur(25px);
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+.shutdown-dialog h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+.shutdown-dialog p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+.dialog-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0 10px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+#confirm-shutdown {
+    background-color: #007aff;
+    color: white;
+}
+#confirm-shutdown:hover {
+    background-color: #0a84ff;
+}
+#cancel-shutdown {
+    background-color: #555;
+    color: white;
+}
+#cancel-shutdown:hover {
+    background-color: #666;
+}
