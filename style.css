@@ -1,0 +1,356 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ✨ DARK THEME COLOR PALETTE ✨ */
+:root {
+    --background: url('mac.jpg');
+    --window-bg: rgba(40, 40, 40, 0.6);
+    --dock-bg: rgba(30, 30, 30, 0.4);
+    --text-color: #e0e0e0;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --sidebar-bg: rgba(255, 255, 255, 0.05);
+    --hover-bg: rgba(0, 122, 255, 0.3);
+    --card-bg: rgba(255, 255, 255, 0.07);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    cursor: default;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 1. Desk Setup */
+.desk-container {
+    width: 100%;
+    height: 100vh;
+    background: url('aggg.jpg') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.macbook {
+    position: relative;
+    transform: rotateX(25deg) rotateZ(0deg) scale(0.8);
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    cursor: pointer;
+}
+
+.macbook:hover {
+    transform: rotateX(15deg) scale(0.85);
+}
+
+.macbook img {
+    width: 700px;
+    filter: drop-shadow(0 30px 20px rgba(0,0,0,0.4));
+}
+
+.macbook .click-to-open {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    background-color: rgba(0,0,0,0.6);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.macbook:hover .click-to-open {
+    opacity: 1;
+}
+
+/* Zoomed-in State */
+.container.zoomed-in .desk-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.container.zoomed-in .desktop-container {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+}
+
+/* 2. Desktop Environment */
+.desktop-container {
+    width: 100%;
+    height: 100vh;
+    background: var(--background) center/cover no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transform: scale(1.5);
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+    pointer-events: none;
+}
+
+/* REMOVED: The original profile picture styling '#profile-pic' has been removed. */
+
+/* Top Menu Bar */
+.top-menu-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 14px;
+    color: var(--text-color);
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.left-menu .fa-apple {
+    font-size: 18px;
+    margin-right: 15px;
+}
+
+.left-menu .app-name {
+    font-weight: 600;
+}
+
+.right-menu .battery-status {
+    margin-right: 15px;
+}
+
+/* Windows */
+.window {
+    position: absolute;
+    width: 800px;
+    height: 500px;
+    top: 100px;
+    left: calc(50% - 400px);
+    background: var(--window-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    resize: both;
+    min-width: 400px;
+    min-height: 300px;
+}
+
+.window-header {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    cursor: move;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.window-controls .control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.control.close { background-color: #ff5f56; }
+.control.minimize { background-color: #ffbd2e; }
+.control.maximize { background-color: #27c93f; }
+
+.window-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.window-body {
+    flex-grow: 1;
+    display: flex;
+    color: var(--text-color);
+}
+
+.sidebar {
+    width: 200px;
+    background: var(--sidebar-bg);
+    padding: 20px 0;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+    border-radius: 5px;
+    margin: 2px 8px;
+}
+
+.sidebar ul li.active, .sidebar ul li:hover {
+    background: var(--hover-bg);
+}
+
+.sidebar ul li i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.content {
+    padding: 25px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.content-section hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;}
+
+/* Skills Grid */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.skill-item {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.skill-item i {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Projects Window */
+.project-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.project-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.project-card h4 { margin-bottom: 10px; }
+
+/* Contact Window */
+/* Contact Window */
+.contact-body a {
+    /* Critical for vertical alignment: makes each link take up a full line */
+    display: block; 
+    
+    /* Inherit the theme text color (from :root) */
+    color: var(--text-color);
+    align-items: center;
+    
+    /* Remove the default link underline for a cleaner look */
+    text-decoration: currentColor; 
+    
+    /* Add some space below each contact item for separation */
+    padding: 5px 0;
+    
+    /* Optional: Slight color change on hover for interactivity */
+    transition: color 0.2s ease;
+}
+
+.contact-body a:hover {
+    /* Use the text color for a clean look, maybe slightly brighter or a brand color */
+    color: #fff; 
+}
+
+/* ✨ GLASS DOCK STYLING ✨ */
+.dock {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 8px;
+    height: 70px;
+    background: var(--dock-bg);
+    backdrop-filter: blur(25px); /* Increased blur */
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 22px; /* Adjusted for glass look */
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 20px var(--shadow-color);
+    z-index: 1000;
+}
+
+.dock-item {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    font-size: 28px;
+    color: #fff; /* Icons are now white */
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), margin-bottom 0.2s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+/* NEW STYLING for Profile Picture Dock Item */
+
+ 
+
+.dock-item:hover {
+    transform: scale(1.2) translateY(-10px);
+    margin: 0 10px;
+}
+
+.dock-item[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 75px;
+    background-color: rgba(0,0,0,0.9);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
