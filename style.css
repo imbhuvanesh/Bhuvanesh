@@ -2,7 +2,7 @@
 
 /* ✨ DARK THEME COLOR PALETTE ✨ */
 :root {
-    --background: url('mac.jpg');
+    --background: url('macwall.jpg');
     --window-bg: rgba(40, 40, 40, 0.6);
     --dock-bg: rgba(30, 30, 30, 0.4);
     --text-color: #e0e0e0;
@@ -353,4 +353,5 @@ body {
     border-radius: 5px;
     font-size: 12px;
     white-space: nowrap;
+
 }
