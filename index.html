@@ -20,7 +20,12 @@
         <div class="desktop-container hidden">
             <header class="top-menu-bar">
                 <div class="left-menu">
-                    <i class="fa-brands fa-apple"></i>
+                    <div class="apple-menu">
+                        <i class="fa-brands fa-apple"></i>
+                        <ul class="dropdown-menu hidden">
+                            <li id="shutdown-btn">Shut Down...</li>
+                        </ul>
+                    </div>
                     <span class="app-name">Finder</span>
                 </div>
                 <div class="right-menu">
@@ -52,24 +57,24 @@
                             <p>Electronics and Communication Engineering Student</p>
                             <hr>
                             <p>Final-year ECE student with hands-on experience in electronics, IoT, and communication systems. Skilled in sensors, microcontrollers, Java, Node.js, and MySQL. Looking to contribute to practical electronics and communication projects.</p>
-                             <h4><i class="fas fa-graduation-cap"></i> Education</h4>
-                             <p><strong>B.E. Electronics and Communication Engineering</strong><br>V.S.B. Engg. College, Karur (2022-2026) - CGPA: 7.4/10</p>
+                            <h4><i class="fas fa-graduation-cap"></i> Education</h4>
+                            <p><strong>B.E. Electronics and Communication Engineering</strong><br>V.S.B. Engg. College, Karur (2022-2026) - CGPA: 7.4/10</p>
                         </section>
                         <section id="skills-section" class="content-section hidden">
-                             <h2>Technical Skills</h2>
-                             <div class="skills-grid">
-                                 <div class="skill-item"><i class="fab fa-java"></i> Java</div>
-                                 <div class="skill-item"><i class="fas fa-database"></i> MySQL</div>
-                                 <div class="skill-item"><i class="fab fa-html5"></i> HTML</div>
-                                 <div class="skill-item"><i class="fab fa-css3-alt"></i> CSS</div>
-                                 <div class="skill-item"><i class="fab fa-js"></i> JavaScript</div>
-                                 <div class="skill-item"><i class="fab fa-git-alt"></i> Git</div>
-                                 <div class="skill-item"><i class="fab fa-github"></i> GitHub</div>
-                                 <div class="skill-item"><i class="fas fa-network-wired"></i> Networks & Security</div>
-                             </div>
-                             <h4><i class="fas fa-certificate"></i> Certifications</h4>
-                             <p>Mastering Fundamentals in Java - Scaler</p>
-                             <p>ChatGPT for Everyone - GUVI</p>
+                            <h2>Technical Skills</h2>
+                            <div class="skills-grid">
+                                <div class="skill-item"><i class="fab fa-java"></i> Java</div>
+                                <div class="skill-item"><i class="fas fa-database"></i> MySQL</div>
+                                <div class="skill-item"><i class="fab fa-html5"></i> HTML</div>
+                                <div class="skill-item"><i class="fab fa-css3-alt"></i> CSS</div>
+                                <div class="skill-item"><i class="fab fa-js"></i> JavaScript</div>
+                                <div class="skill-item"><i class="fab fa-git-alt"></i> Git</div>
+                                <div class="skill-item"><i class="fab fa-github"></i> GitHub</div>
+                                <div class="skill-item"><i class="fas fa-network-wired"></i> Networks & Security</div>
+                            </div>
+                            <h4><i class="fas fa-certificate"></i> Certifications</h4>
+                            <p>Mastering Fundamentals in Java - Scaler</p>
+                            <p>ChatGPT for Everyone - GUVI</p>
                         </section>
                         <section id="experience-section" class="content-section hidden">
                             <h2>Internship Experience</h2>
@@ -131,7 +136,6 @@
             </div>
 
             <footer class="dock">
-                
                 <div class="dock-item" data-window="portfolio-window" title="Portfolio">
                     <i class="fas fa-folder-open"></i>
                 </div>
@@ -142,6 +146,17 @@
                     <i class="fas fa-envelope"></i>
                 </div>
             </footer>
+        </div>
+    </div>
+    
+    <div id="shutdown-overlay" class="overlay-container hidden">
+        <div class="shutdown-dialog">
+            <h4>Are you sure you want to shut down?</h4>
+            <p>All open applications will be closed.</p>
+            <div class="dialog-buttons">
+                <button id="cancel-shutdown">Cancel</button>
+                <button id="confirm-shutdown">Shut Down</button>
+            </div>
         </div>
     </div>
     
