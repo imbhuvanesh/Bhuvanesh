@@ -2,7 +2,7 @@
 
 /* ✨ DARK THEME COLOR PALETTE ✨ */
 :root {
-    --background: url('macwall.jpg');
+    --background: url('mac.jpg');
     --window-bg: rgba(40, 40, 40, 0.6);
     --dock-bg: rgba(30, 30, 30, 0.4);
     --text-color: #e0e0e0;
@@ -34,7 +34,7 @@ body {
 .desk-container {
     width: 100%;
     height: 100vh;
-    background: url('cadm.jpg') center/cover no-repeat;
+    background: url('aggg.jpg') center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -355,4 +355,5 @@ body {
     white-space: nowrap;
 
 }
+
 
