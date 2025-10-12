@@ -472,3 +472,65 @@ body {
 #cancel-shutdown:hover {
     background-color: #666;
 }
+
+/* --- BOOT SCREEN STYLING (NEW) --- */
+#boot-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black; /* Traditional Mac boot background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* Ensure it's on top of everything */
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+#boot-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.boot-logo {
+    color: white;
+    font-size: 5rem;
+    margin-bottom: 50px;
+    animation: pulse 1.5s infinite alternate;
+}
+
+.boot-loader {
+    width: 250px;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 1.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.boot-loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    border-radius: 1.5px;
+    /* Animation: Moves the white bar from left to right over 3s */
+    animation: load-bar 3s linear forwards;
+}
+
+/* Keyframe Animations */
+@keyframes load-bar {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+}
+
+@keyframes pulse {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
+}
