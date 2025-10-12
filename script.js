@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeElement = document.getElementById('time');
     const dockItems = document.querySelectorAll('.dock-item');
     const windows = document.querySelectorAll('.window');
+    const bootScreen = document.getElementById('boot-screen'); // NEW
 
     // Shutdown elements
     const appleIcon = document.querySelector('.apple-menu');
@@ -18,12 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Initial Setup ---
     
-    // 1. Zoom Interaction (Boot Up)
-    macbook.addEventListener('click', () => {
-        container.classList.add('zoomed-in');
-        desktop.classList.remove('hidden');
-    });
-
     // 2. Update Clock
     function updateTime() {
         const now = new Date();
@@ -37,6 +32,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setInterval(updateTime, 1000);
     updateTime();
+
+    // 4. Fullscreen Helper Function (NEW)
+    function requestFullscreen(element) {
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) { /* Firefox */
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) { /* IE/Edge */
+            element.msRequestFullscreen();
+        }
+    }
+
+    // 1. Zoom Interaction (Boot Up) - MODIFIED LOGIC
+    macbook.addEventListener('click', () => {
+        // 1. Request Fullscreen
+        requestFullscreen(document.documentElement); 
+        
+        // 2. Show Boot Screen and hide the desk immediately
+        bootScreen.classList.remove('hidden');
+        document.querySelector('.desk-container').style.opacity = '0'; // Instant hide for clean transition
+        
+        // 3. Start Animation and Transition to Desktop
+        const bootDuration = 3000; // Matches CSS animation duration
+
+        setTimeout(() => {
+            // Fade out the boot screen
+            bootScreen.classList.add('fade-out'); 
+            
+            // After fade-out, reveal the desktop
+            setTimeout(() => {
+                bootScreen.classList.add('hidden');
+                
+                // Show the desktop environment
+                container.classList.add('zoomed-in');
+                desktop.classList.remove('hidden');
+                
+                // Automatically open the portfolio window after boot
+                const portfolioWindow = document.getElementById('portfolio-window');
+                const portfolioDock = document.querySelector('.dock-item[data-window="portfolio-window"]');
+                if (portfolioWindow) {
+                    portfolioWindow.classList.remove('hidden');
+                    portfolioDock.classList.add('is-open');
+                    focusWindow(portfolioWindow);
+                }
+            }, 500); // Wait for the fade-out transition (0.5s)
+
+        }, bootDuration); 
+
+    });
+
 
     // --- Window Management ---
     let activeWindow = null;
@@ -203,9 +250,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reverse the boot-up animation
         container.classList.remove('zoomed-in');
         
-        // Reset dock indicators after the animation finishes
+        // Reset dock indicators and macbook visibility
         setTimeout(() => {
             dockItems.forEach(item => item.classList.remove('is-open'));
+            document.querySelector('.desk-container').style.opacity = '1'; 
+            
+            // Exit fullscreen if possible
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+
         }, 600); // Must match CSS transition duration
     });
 });
