@@ -2,7 +2,7 @@
 
 /* ✨ DARK THEME COLOR PALETTE ✨ */
 :root {
-    --background: url('mac.jpg');
+    --background: url('Bhuvanesh.jpg');
     --window-bg: rgba(40, 40, 40, 0.6);
     --dock-bg: rgba(30, 30, 30, 0.4);
     --text-color: #e0e0e0;
@@ -534,3 +534,4 @@ body {
     from { opacity: 0.8; }
     to { opacity: 1; }
 }
+
