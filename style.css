@@ -34,7 +34,7 @@ body {
 .desk-container {
     width: 100%;
     height: 100vh;
-    background: url('\Artboard 1 (1).jpg') center/cover no-repeat;
+    background: url('Artboard.jpg') center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -548,5 +548,6 @@ body {
     to { opacity: 1; }
 }
 /*n*/
+
 
 
